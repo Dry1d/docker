@@ -1,0 +1,24 @@
+FROM debian
+MAINTAINER dry1d@hotmail.com
+
+
+ADD sources.list /etc/apt/sources.list
+RUN apt-get -y update
+RUN apt-get -qy install openbox openssh-client
+
+ADD nomachine_5.1.44_1_amd64.deb /
+RUN dpkg -i /nomachine_5.1.44_1_amd64.deb
+
+RUN groupadd -r nomachine -g 433 && \
+useradd -u 431 -r -g nomachine -d /home/nomachine -s /bin/bash -c "NoMachine" nomachine && \
+mkdir /home/nomachine && \
+chown -R nomachine:nomachine /home/nomachine && \
+echo 'nomachine:nomachine' | chpasswd
+
+EXPOSE 4000
+EXPOSE 22
+
+USER root
+ADD nxserver.sh /
+RUN chmod +x /nxserver.sh
+ENTRYPOINT ["/nxserver.sh"]

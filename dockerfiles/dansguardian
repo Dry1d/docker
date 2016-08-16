@@ -1,0 +1,21 @@
+FROM debian
+MAINTAINER Dry1d Dry1d@hotmail.com
+
+ADD resolv.conf /etc/resolv.conf
+ADD sources.list /etc/apt/sources.list
+
+RUN apt-get update -q
+RUN apt-get install -qy dansguardian squid3
+RUN /etc/init.d/dansguardian stop
+RUN /etc/init.d/squid3 stop
+
+ADD squid.conf /etc/squid3/squid.conf
+
+ADD dansguardian.conf /etc/dansguardian/dansguardian.conf
+
+ADD run /files/run
+
+EXPOSE 8081
+EXPOSE 443
+
+CMD /files/run

@@ -1,0 +1,15 @@
+[Unit]
+Description=dansguardian
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill dansguardian
+ExecStartPre=-/usr/bin/docker rm dansguardian
+ExecStartPre=/usr/bin/docker pull dry1d/dansguardian
+ExecStart=/usr/bin/docker run -d -v logs:/var/log/ -v squidcache:/var/spool/squid3:rw -v lists:/etc/dansguardian/lists --name dansguardian -t dry1d/dansguardian 
+ExecStartPost=/scripts/dansguardian.iptables
+
+[Install]
+WantedBy=multi-user.target

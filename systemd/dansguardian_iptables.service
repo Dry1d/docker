@@ -1,0 +1,13 @@
+[Unit]
+Description="Run iptables dansguardian script"
+Requires=dansguardian.service   
+After=dansguardian.service
+ 
+[Service]
+Type=oneshot
+RemainAfterExit=True
+ExecStart=/scripts/dansguardian.iptables
+TimeoutSec=600
+
+[Install]
+WantedBy=multi-user.target

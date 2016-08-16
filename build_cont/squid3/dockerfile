@@ -1,0 +1,16 @@
+FROM debian
+MAINTAINER Dry1d Dry1d@hotmail.com
+
+ADD sources.list /etc/apt/sources.list
+VOLUME /docker/logs/ /var/log/
+
+RUN apt-get update -q
+RUN apt-get install -qy squid3
+
+RUN /etc/init.d/squid3 stop
+ADD squid.conf /etc/squid3/squid.conf
+RUN /usr/sbin/squid3 -z
+
+EXPOSE 80/tcp
+
+CMD /etc/init.d/squid3 start

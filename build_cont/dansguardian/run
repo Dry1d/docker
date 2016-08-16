@@ -1,0 +1,5 @@
+#!/bin/bash
+squid3 start
+service dansguardian start
+tail -f /var/log/dansguardian/access.log
+#sleep infinity
